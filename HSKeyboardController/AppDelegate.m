@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "HSKeyboardController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[HSKeyboardController sharedController] start];
+    
     return YES;
 }
 

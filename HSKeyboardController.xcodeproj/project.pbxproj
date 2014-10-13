@@ -14,6 +14,8 @@
 		DC74670319EC1B2C000833AE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC74670219EC1B2C000833AE /* Images.xcassets */; };
 		DC74670619EC1B2C000833AE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC74670419EC1B2C000833AE /* LaunchScreen.xib */; };
 		DC74671219EC1B2D000833AE /* HSKeyboardControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC74671119EC1B2D000833AE /* HSKeyboardControllerTests.m */; };
+		DC74672919EC1C3D000833AE /* HSKeyboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC74672519EC1C3D000833AE /* HSKeyboardController.m */; };
+		DC74672A19EC1C3D000833AE /* HSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC74672819EC1C3D000833AE /* HSTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,11 @@
 		DC74670B19EC1B2D000833AE /* HSKeyboardControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HSKeyboardControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC74671019EC1B2D000833AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC74671119EC1B2D000833AE /* HSKeyboardControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HSKeyboardControllerTests.m; sourceTree = "<group>"; };
+		DC74672419EC1C3D000833AE /* HSKeyboardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSKeyboardController.h; sourceTree = "<group>"; };
+		DC74672519EC1C3D000833AE /* HSKeyboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSKeyboardController.m; sourceTree = "<group>"; };
+		DC74672619EC1C3D000833AE /* HSKeyboardControllerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSKeyboardControllerSettings.h; sourceTree = "<group>"; };
+		DC74672719EC1C3D000833AE /* HSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSTextView.h; sourceTree = "<group>"; };
+		DC74672819EC1C3D000833AE /* HSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +92,7 @@
 				DC7466FA19EC1B2C000833AE /* AppDelegate.m */,
 				DC7466FC19EC1B2C000833AE /* ViewController.h */,
 				DC7466FD19EC1B2C000833AE /* ViewController.m */,
+				DC74672319EC1C3D000833AE /* HSKeyboardController */,
 				DC7466FF19EC1B2C000833AE /* Main.storyboard */,
 				DC74670219EC1B2C000833AE /* Images.xcassets */,
 				DC74670419EC1B2C000833AE /* LaunchScreen.xib */,
@@ -117,6 +125,18 @@
 				DC74671019EC1B2D000833AE /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DC74672319EC1C3D000833AE /* HSKeyboardController */ = {
+			isa = PBXGroup;
+			children = (
+				DC74672419EC1C3D000833AE /* HSKeyboardController.h */,
+				DC74672519EC1C3D000833AE /* HSKeyboardController.m */,
+				DC74672619EC1C3D000833AE /* HSKeyboardControllerSettings.h */,
+				DC74672719EC1C3D000833AE /* HSTextView.h */,
+				DC74672819EC1C3D000833AE /* HSTextView.m */,
+			);
+			path = HSKeyboardController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +240,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC7466FE19EC1B2C000833AE /* ViewController.m in Sources */,
+				DC74672919EC1C3D000833AE /* HSKeyboardController.m in Sources */,
+				DC74672A19EC1C3D000833AE /* HSTextView.m in Sources */,
 				DC7466FB19EC1B2C000833AE /* AppDelegate.m in Sources */,
 				DC7466F819EC1B2C000833AE /* main.m in Sources */,
 			);
@@ -346,6 +368,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HSKeyboardController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -356,6 +379,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HSKeyboardController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -414,6 +438,7 @@
 				DC74671719EC1B2D000833AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DC74671819EC1B2D000833AE /* Build configuration list for PBXNativeTarget "HSKeyboardControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +447,7 @@
 				DC74671A19EC1B2D000833AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
