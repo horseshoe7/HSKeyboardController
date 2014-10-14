@@ -9,7 +9,10 @@
 #import "HSTextView.h"
 #import "HSKeyboardControllerSettings.h"
 
+
+
 @implementation HSTextView
+
 
 - (NSArray *)keyCommands {
     return @[[UIKeyCommand keyCommandWithInput:kHSKeyboardControllerInvoke modifierFlags:0 action:@selector(invoke)],
@@ -109,6 +112,8 @@
 }
 
 - (void)arrowKey:(UIKeyCommand*)sender {
+    
+    
     switch (sender.modifierFlags) {
         case UIKeyModifierShift:
             [self.keyboardInputDelegate arrowKeyPressed:sender.input modifier:UIKeyModifierShift];

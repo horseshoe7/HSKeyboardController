@@ -12,6 +12,8 @@
 extern NSString * const HSKeyboardControllerNotificationKeyControlDidStart;
 extern NSString * const HSKeyboardControllerNotificationKeyControlDidEnd;
 
+extern NSString * const HSKeyboardControllerNotificationKeyPress;
+
 /**
  
  The `HSKeyboardController` is a class you can use to control aspects of your iOS App when running in the simulator.  It is basically a stripped-down version of DCIntrospect, based on the same code.
@@ -24,7 +26,14 @@ extern NSString * const HSKeyboardControllerNotificationKeyControlDidEnd;
  
  You can in use the keys a-z and A-Z, as well as the numeric keypad's 0-9 keys, and the arrow keys (in combination with shift or alt)
  
+ HOW TO USE:
+ 
+ register for key presses you are interested using NSNotificationCenter, and register a HSKeyEvent object
+ 
+ 
+ 
  */
+
 
 @interface HSKeyboardController : NSObject<UITextViewDelegate>
 
@@ -37,11 +46,12 @@ extern NSString * const HSKeyboardControllerNotificationKeyControlDidEnd;
 
 - (void)start;
 
-// wrapper for the method below
-- (void)mapKey:(NSString*)key target:(id)target action:(SEL)action;
+@end
 
-// re-using UIKeyCommand for input and modifier.  action is obviously nil
-- (void)mapKeyCommand:(UIKeyCommand*)command target:(id)target action:(SEL)action;
 
+@interface HSKeyEvent : NSObject
+
++ (HSKeyEvent*)keyEventForKey:(NSString*)key;
++ (HSKeyEvent*)keyEventForKey:(NSString*)key modifier:(UIKeyModifierFlags)modifier;  // UIKey
 
 @end
