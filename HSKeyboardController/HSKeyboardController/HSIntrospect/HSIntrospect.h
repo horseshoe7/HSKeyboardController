@@ -102,15 +102,7 @@ extern NSString * const HSIntrospectUserInfoSelectedView;
 
 - (void)toggleOutlines;
 - (void)addOutlinesToFrameViewFromSubview:(UIView *)view;
-- (void)setBackgroundColor:(UIColor *)color ofNonOpaqueViewsInSubview:(UIView *)view;
-- (void)callDrawRectOnViewsInSubview:(UIView *)subview;
 
-
-/////////////////////////////
-// (Somewhat) Experimental //
-/////////////////////////////
-
-- (NSArray *)subclassesOfClass:(Class)parentClass;
 
 
 ////////////////////

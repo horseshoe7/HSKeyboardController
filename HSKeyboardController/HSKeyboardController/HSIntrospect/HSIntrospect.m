@@ -502,54 +502,6 @@ NSString * const HSIntrospectUserInfoSelectedView = @"HSIntrospectUserInfoSelect
 	}
 }
 
-
-- (void)setBackgroundColor:(UIColor *)color ofNonOpaqueViewsInSubview:(UIView *)view
-{
-	for (UIView *subview in view.subviews)
-	{
-		if ([self shouldIgnoreView:subview])
-			continue;
-		
-		if (!subview.opaque)
-			subview.backgroundColor = color;
-		
-		[self setBackgroundColor:color ofNonOpaqueViewsInSubview:subview];
-	}
-}
-
-
-
-- (void)toggleShowCoordinates {
-    if (!self.on)
-		return;
-	
-    
-    [UIView animateWithDuration:0.15
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         self.frameView.touchPointLabel.alpha = !self.frameView.touchPointLabel.alpha;
-                     } completion:^(BOOL finished) {
-                         NSString *coordinatesString = [NSString stringWithFormat:@"Coordinates are %@", (self.frameView.touchPointLabel.alpha) ? @"on" : @"off"];
-                         if (self.showStatusBarOverlay)
-                             [self showTemporaryStringInStatusBar:coordinatesString];
-                         else
-                             NSLog(@"HSIntrospect-ARC: %@", coordinatesString);
-                     }];
-}
-
-- (void)callDrawRectOnViewsInSubview:(UIView *)subview
-{
-	for (UIView *view in subview.subviews)
-	{
-		if (![self shouldIgnoreView:view])
-		{
-			[view setNeedsDisplay];
-			[self callDrawRectOnViewsInSubview:view];
-		}
-	}
-}
-
 #pragma mark - HSTextViewDelegate
 
 - (void)invokeKeyboardController
@@ -711,48 +663,6 @@ NSString* _recursiveDescription(id view, NSUInteger depth)
     return [NSString stringWithFormat:@"%@%@\n%@", layout, [view description], subviewsDescription];
 }
 
-#pragma mark HSIntrospector Help
-
-
-#pragma mark Experimental
-
-
-- (NSArray *)subclassesOfClass:(Class)parentClass
-{
-	// thanks to Matt Gallagher:
-    int numClasses = objc_getClassList(NULL, 0);
-    Class *classes = NULL;
-	
-//    classes = malloc(sizeof(Class) * numClasses);
-    numClasses = objc_getClassList(classes, numClasses);
-	
-    NSMutableArray *result = [NSMutableArray array];
-    if (classes != NULL) {
-        
-        for (NSInteger i = 0; i < numClasses; i++)
-        {
-            
-            Class superClass = classes[i];
-            do
-            {
-                superClass = class_getSuperclass(superClass);
-            } while(superClass && superClass != parentClass);
-            
-            if (superClass == nil)
-            {
-                continue;
-            }
-            
-            [result addObject:classes[i]];
-        }
-        
-        free(classes);
-    }
-    	
-    classes = NULL;
-	
-    return result;
-}
 
 #pragma mark Helper Methods
 
