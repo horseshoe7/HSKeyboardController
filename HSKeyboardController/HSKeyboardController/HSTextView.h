@@ -22,6 +22,14 @@
 // 0 - 9 on numeric pad
 - (void)numericPadKeyPressed:(NSInteger)numberKey;
 
+@optional
+
+- (void)moveUpInViewHierarchy;
+- (void)moveBackInViewHierarchy;
+- (void)moveDownToFirstSubview;
+- (void)moveToNextSiblingView;
+- (void)moveToPrevSiblingView;
+
 @end
 
 

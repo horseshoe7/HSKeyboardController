@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC522C8419EDD393006FC449 /* HSICrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C7B19EDD393006FC449 /* HSICrossHairView.m */; };
+		DC522C8519EDD393006FC449 /* HSIFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C7D19EDD393006FC449 /* HSIFrameView.m */; };
+		DC522C8619EDD393006FC449 /* HSIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C7F19EDD393006FC449 /* HSIntrospect.m */; };
+		DC522C8719EDD393006FC449 /* HSIStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C8119EDD393006FC449 /* HSIStatusBarOverlay.m */; };
+		DC522C8819EDD393006FC449 /* UIView+HSIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C8319EDD393006FC449 /* UIView+HSIAdditions.m */; };
+		DC522C8B19EE210D006FC449 /* HSKeyEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = DC522C8A19EE210D006FC449 /* HSKeyEvent.m */; };
 		DC7466F819EC1B2C000833AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7466F719EC1B2C000833AE /* main.m */; };
 		DC7466FB19EC1B2C000833AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7466FA19EC1B2C000833AE /* AppDelegate.m */; };
 		DC7466FE19EC1B2C000833AE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7466FD19EC1B2C000833AE /* ViewController.m */; };
@@ -29,6 +35,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC522C7A19EDD393006FC449 /* HSICrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSICrossHairView.h; sourceTree = "<group>"; };
+		DC522C7B19EDD393006FC449 /* HSICrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSICrossHairView.m; sourceTree = "<group>"; };
+		DC522C7C19EDD393006FC449 /* HSIFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSIFrameView.h; sourceTree = "<group>"; };
+		DC522C7D19EDD393006FC449 /* HSIFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSIFrameView.m; sourceTree = "<group>"; };
+		DC522C7E19EDD393006FC449 /* HSIntrospect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSIntrospect.h; sourceTree = "<group>"; };
+		DC522C7F19EDD393006FC449 /* HSIntrospect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSIntrospect.m; sourceTree = "<group>"; };
+		DC522C8019EDD393006FC449 /* HSIStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSIStatusBarOverlay.h; sourceTree = "<group>"; };
+		DC522C8119EDD393006FC449 /* HSIStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSIStatusBarOverlay.m; sourceTree = "<group>"; };
+		DC522C8219EDD393006FC449 /* UIView+HSIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HSIAdditions.h"; sourceTree = "<group>"; };
+		DC522C8319EDD393006FC449 /* UIView+HSIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HSIAdditions.m"; sourceTree = "<group>"; };
+		DC522C8919EE210D006FC449 /* HSKeyEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSKeyEvent.h; sourceTree = "<group>"; };
+		DC522C8A19EE210D006FC449 /* HSKeyEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSKeyEvent.m; sourceTree = "<group>"; };
 		DC7466F219EC1B2C000833AE /* HSKeyboardController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HSKeyboardController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7466F619EC1B2C000833AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC7466F719EC1B2C000833AE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -67,6 +85,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC522C7919EDD393006FC449 /* HSIntrospect */ = {
+			isa = PBXGroup;
+			children = (
+				DC522C7A19EDD393006FC449 /* HSICrossHairView.h */,
+				DC522C7B19EDD393006FC449 /* HSICrossHairView.m */,
+				DC522C7C19EDD393006FC449 /* HSIFrameView.h */,
+				DC522C7D19EDD393006FC449 /* HSIFrameView.m */,
+				DC522C7E19EDD393006FC449 /* HSIntrospect.h */,
+				DC522C7F19EDD393006FC449 /* HSIntrospect.m */,
+				DC522C8019EDD393006FC449 /* HSIStatusBarOverlay.h */,
+				DC522C8119EDD393006FC449 /* HSIStatusBarOverlay.m */,
+				DC522C8219EDD393006FC449 /* UIView+HSIAdditions.h */,
+				DC522C8319EDD393006FC449 /* UIView+HSIAdditions.m */,
+			);
+			path = HSIntrospect;
+			sourceTree = "<group>";
+		};
 		DC7466E919EC1B2C000833AE = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +170,9 @@
 				DC74672619EC1C3D000833AE /* HSKeyboardControllerSettings.h */,
 				DC74672719EC1C3D000833AE /* HSTextView.h */,
 				DC74672819EC1C3D000833AE /* HSTextView.m */,
+				DC522C7919EDD393006FC449 /* HSIntrospect */,
+				DC522C8919EE210D006FC449 /* HSKeyEvent.h */,
+				DC522C8A19EE210D006FC449 /* HSKeyEvent.m */,
 			);
 			path = HSKeyboardController;
 			sourceTree = "<group>";
@@ -239,11 +277,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC522C8B19EE210D006FC449 /* HSKeyEvent.m in Sources */,
 				DC7466FE19EC1B2C000833AE /* ViewController.m in Sources */,
+				DC522C8819EDD393006FC449 /* UIView+HSIAdditions.m in Sources */,
 				DC74672919EC1C3D000833AE /* HSKeyboardController.m in Sources */,
 				DC74672A19EC1C3D000833AE /* HSTextView.m in Sources */,
 				DC7466FB19EC1B2C000833AE /* AppDelegate.m in Sources */,
+				DC522C8419EDD393006FC449 /* HSICrossHairView.m in Sources */,
 				DC7466F819EC1B2C000833AE /* main.m in Sources */,
+				DC522C8719EDD393006FC449 /* HSIStatusBarOverlay.m in Sources */,
+				DC522C8519EDD393006FC449 /* HSIFrameView.m in Sources */,
+				DC522C8619EDD393006FC449 /* HSIntrospect.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

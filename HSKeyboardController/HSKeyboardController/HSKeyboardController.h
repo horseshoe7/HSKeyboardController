@@ -11,7 +11,6 @@
 
 extern NSString * const HSKeyboardControllerNotificationKeyControlDidStart;
 extern NSString * const HSKeyboardControllerNotificationKeyControlDidEnd;
-
 extern NSString * const HSKeyboardControllerNotificationKeyPress;
 
 /**
@@ -49,9 +48,3 @@ extern NSString * const HSKeyboardControllerNotificationKeyPress;
 @end
 
 
-@interface HSKeyEvent : NSObject
-
-+ (HSKeyEvent*)keyEventForKey:(NSString*)key;
-+ (HSKeyEvent*)keyEventForKey:(NSString*)key modifier:(UIKeyModifierFlags)modifier;  // UIKey
-
-@end

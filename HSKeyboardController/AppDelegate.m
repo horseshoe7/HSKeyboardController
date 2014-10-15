@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "HSKeyboardController.h"
+#import "HSIntrospect.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [[HSKeyboardController sharedController] start];
+    [[HSIntrospect sharedIntrospector] start];
     
     return YES;
 }
