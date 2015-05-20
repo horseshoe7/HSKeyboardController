@@ -28,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC694FE01B0C740D005FBF16 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DC7466F219EC1B2C000833AE /* HSKeyboardController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HSKeyboardController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7466F619EC1B2C000833AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC7466F719EC1B2C000833AE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		DC7466E919EC1B2C000833AE = {
 			isa = PBXGroup;
 			children = (
+				DC694FE01B0C740D005FBF16 /* README.md */,
 				DC7466F419EC1B2C000833AE /* HSKeyboardController */,
 				DC74670E19EC1B2D000833AE /* HSKeyboardControllerTests */,
 				DC7466F319EC1B2C000833AE /* Products */,
