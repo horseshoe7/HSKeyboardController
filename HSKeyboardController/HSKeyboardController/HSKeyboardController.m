@@ -7,18 +7,292 @@
 //
 
 #import "HSKeyboardController.h"
-#import "HSKeyboardControllerSettings.h"
-#import "HSTextView.h"
-#import "HSKeyEvent.h"
+
 
 NSString * const HSKeyboardControllerNotificationKeyControlDidStart = @"HSKeyboardControllerNotificationKeyControlDidStart";
 NSString * const HSKeyboardControllerNotificationKeyControlDidEnd = @"HSKeyboardControllerNotificationKeyControlDidEnd";
 
 NSString * const HSKeyboardControllerNotificationKeyPress = @"HSKeyboardControllerNotificationKeyPress";
 
+#pragma mark -
+#pragma mark - HSKeyEvent
+
+@interface HSKeyEvent()
+
+@property (nonatomic, strong) UIKeyCommand *command;
+
+@end
+
+static NSCache *kCommandCache = nil;
 
 
+@implementation HSKeyEvent
 
++ (void)initialize
+{
+    if (self == [HSKeyEvent class]) {
+        kCommandCache = [[NSCache alloc] init];
+    }
+}
+
++ (HSKeyEvent*)cachedEventForKey:(NSString*)key modifier:(UIKeyModifierFlags)modifier
+{
+    HSKeyEvent *event = nil;
+    if (modifier == 0 && [key isEqualToString:[key uppercaseString]]) {
+        key = [key lowercaseString];
+        modifier = UIKeyModifierShift;
+    }
+    NSString *cacheKey = [self cacheNameForKey:key modifier:modifier];
+    event = [kCommandCache objectForKey: cacheKey];
+    
+    
+    return event;
+    
+}
+
++ (NSString*)cacheNameForKey:(NSString*)key modifier:(UIKeyModifierFlags)modifier
+{
+    NSString *cacheKey = [NSString stringWithFormat:@"%@_%ul", key, (unsigned int)modifier];
+    return cacheKey;
+}
+
++ (HSKeyEvent*)keyEventForKey:(NSString*)key
+{
+    return [HSKeyEvent keyEventForKey:key modifier:0];
+}
+
++ (HSKeyEvent*)keyEventForKey:(NSString*)key modifier:(UIKeyModifierFlags)modifier
+{
+    HSKeyEvent *event = [self cachedEventForKey:key modifier:modifier];
+    
+    if (event) {
+        return event;
+    }
+    
+    if (!event) {
+        event = [[self alloc] init];
+        
+    }
+    
+    UIKeyCommand *keycommand;
+    
+    if (modifier != 0) {
+        // then we assume the coder knows what he's doing
+        keycommand = [UIKeyCommand keyCommandWithInput:key modifierFlags:modifier action:NULL];
+    }
+    else if ([key isEqualToString:[key uppercaseString]]) {
+        // then we're dealing with an uppercase letter
+        key = [key lowercaseString];
+        modifier = UIKeyModifierShift;
+    }
+    
+    keycommand = [UIKeyCommand keyCommandWithInput:key modifierFlags:modifier action:NULL];
+    
+    event.command = keycommand;
+    
+    NSString *cacheKey = [self cacheNameForKey:key modifier:modifier];
+    [kCommandCache setObject:event forKey:cacheKey];
+    
+    return event;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (object == self) {
+        return YES;
+    }
+    else if ([object isKindOfClass:[HSKeyEvent class]])
+    {
+        return [self isEqualToKeyEvent:(HSKeyEvent *)object];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToKeyEvent:(HSKeyEvent*)keyEvent
+{
+    if ([self.command.input isEqualToString:keyEvent.command.input] &&
+        (self.command.modifierFlags == keyEvent.command.modifierFlags)) {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+- (NSUInteger)hash
+{
+    return self.command.hash;
+}
+
+@end
+
+#pragma mark -
+#pragma mark - HSTextView
+
+
+@protocol HSTextViewDelegate <UITextViewDelegate>
+
+- (void)invokeKeyboardController;
+
+// compare string to know which key: with UIKeyInputUpArrow, UIKeyInputDownArrow, UIKeyInputLeftArrow, UIKeyInputRightArrow
+- (void)arrowKeyPressed:(NSString*)key modifier:(UIKeyModifierFlags)modifiers;
+
+// a-z and A-Z
+- (void)alphaKeyPressed:(NSString*)key;
+
+// 0 - 9 on numeric pad
+- (void)numericPadKeyPressed:(NSInteger)numberKey;
+
+
+@end
+
+@interface HSTextView : UITextView
+
+@property (nonatomic, weak) id<HSTextViewDelegate> keyboardInputDelegate;
+
+@end
+
+@implementation HSTextView
+
+
+- (NSArray *)keyCommands {
+    return @[[UIKeyCommand keyCommandWithInput:kHSKeyboardControllerInvoke modifierFlags:0 action:@selector(invoke)],
+             /* ARROW KEYS */
+             [UIKeyCommand keyCommandWithInput:UIKeyInputUpArrow modifierFlags:0 action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputUpArrow modifierFlags:UIKeyModifierShift action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputUpArrow modifierFlags:UIKeyModifierAlternate action:@selector(arrowKey:)],
+             
+             [UIKeyCommand keyCommandWithInput:UIKeyInputDownArrow modifierFlags:0 action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputDownArrow modifierFlags:UIKeyModifierShift action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputDownArrow modifierFlags:UIKeyModifierAlternate action:@selector(arrowKey:)],
+             
+             [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow modifierFlags:0 action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow modifierFlags:UIKeyModifierShift action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow modifierFlags:UIKeyModifierAlternate action:@selector(arrowKey:)],
+             
+             [UIKeyCommand keyCommandWithInput:UIKeyInputRightArrow modifierFlags:0 action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputRightArrow modifierFlags:UIKeyModifierShift action:@selector(arrowKey:)],
+             [UIKeyCommand keyCommandWithInput:UIKeyInputRightArrow modifierFlags:UIKeyModifierAlternate action:@selector(arrowKey:)],
+             
+             /* ALPHA Keys */
+             /* lowercase */
+             [UIKeyCommand keyCommandWithInput:@"q" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"w" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"e" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"r" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"t" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"y" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"u" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"i" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"o" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"p" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"a" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"d" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"f" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"g" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"h" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"j" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"k" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"l" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"z" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"x" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"c" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"v" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"b" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"n" modifierFlags:0 action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"m" modifierFlags:0 action:@selector(alphaKey:)],
+             
+             /* uppercase */
+             [UIKeyCommand keyCommandWithInput:@"q" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"w" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"e" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"r" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"t" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"y" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"u" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"i" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"o" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"p" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"a" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"s" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"d" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"f" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"g" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"h" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"j" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"k" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"l" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"z" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"x" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"c" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"v" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"b" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"n" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             [UIKeyCommand keyCommandWithInput:@"m" modifierFlags:UIKeyModifierShift action:@selector(alphaKey:)],
+             
+             /* Numeric Pad keys */
+             [UIKeyCommand keyCommandWithInput:@"0" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"5" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"6" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"7" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"8" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)],
+             [UIKeyCommand keyCommandWithInput:@"9" modifierFlags:UIKeyModifierNumericPad action:@selector(numericKey:)]
+             
+             ];
+    
+}
+
+- (void)invoke
+{
+    [self.keyboardInputDelegate invokeKeyboardController];
+}
+
+- (void)arrowKey:(UIKeyCommand*)sender {
+    
+    
+    switch (sender.modifierFlags) {
+        case UIKeyModifierShift:
+            [self.keyboardInputDelegate arrowKeyPressed:sender.input modifier:UIKeyModifierShift];
+            break;
+        case UIKeyModifierAlternate:
+            [self.keyboardInputDelegate arrowKeyPressed:sender.input modifier:UIKeyModifierAlternate];
+            break;
+        default:
+            [self.keyboardInputDelegate arrowKeyPressed:sender.input modifier:0];
+            break;
+    }
+}
+
+- (void)alphaKey:(UIKeyCommand*)sender
+{
+    switch (sender.modifierFlags) {
+        case UIKeyModifierShift:
+            [self.keyboardInputDelegate alphaKeyPressed:[sender.input uppercaseString]];
+            break;
+        default:
+            [self.keyboardInputDelegate alphaKeyPressed:sender.input];
+            break;
+    }
+    
+    
+}
+
+- (void)numericKey:(UIKeyCommand*)sender
+{
+    [self.keyboardInputDelegate numericPadKeyPressed:[sender.input integerValue]];
+}
+
+@end
+
+
+#pragma mark -
+#pragma mark - HSKeyboardController
 
 
 @interface HSKeyboardController()<HSTextViewDelegate>

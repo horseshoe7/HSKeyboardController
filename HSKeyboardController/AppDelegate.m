@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "HSIntrospect.h"
+#import "HSKeyboardController.h"
 
 @interface AppDelegate ()
 
@@ -19,8 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [[HSIntrospect sharedIntrospector] start];
-    
+#if TARGET_IPHONE_SIMULATOR
+    [[HSKeyboardController sharedController] start];
+#endif
     return YES;
 }
 

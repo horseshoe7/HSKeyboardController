@@ -7,10 +7,15 @@
 //
 
 #import "ViewController.h"
-#import "HSIntrospect.h"
-#import "HSKeyEvent.h"
+#import "HSKeyboardController.h"
+
 
 @interface ViewController ()
+{
+    id _keyObserver;
+    int _counter;
+}
+
 
 @end
 
@@ -21,25 +26,28 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     __weak ViewController *weakself = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:HSIntrospectNotificationKeyPress
+    _keyObserver = [[NSNotificationCenter defaultCenter] addObserverForName:HSKeyboardControllerNotificationKeyPress
                                                       object:[HSKeyEvent keyEventForKey:@"z"]
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *note) {
-                                                      [weakself pressedX:note];
+                                                      [weakself pressedSmallZ:note];
                                                   }];
 }
 
-
-- (void)pressedX:(NSNotification*)notification
+- (void)dealloc
 {
-    UIView *selectedView = notification.userInfo[HSIntrospectUserInfoSelectedView];
-    
-    if (selectedView) {
-        CGRect newFrame = selectedView.frame;
-        newFrame.origin.x++;
-        
-        selectedView.frame = newFrame;
+    if (_keyObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:_keyObserver];
     }
+}
+
+- (void)pressedSmallZ:(NSNotification*)notification
+{
+    UILabel *labelToAlter = (UILabel*)[self.view viewWithTag:_counter % 3 + 1];
+    
+    labelToAlter.text = [NSString stringWithFormat:@"Pressed z, %i times", _counter + 1];
+    
+    _counter++;
     
 }
 
